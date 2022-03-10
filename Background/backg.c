@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <sdtlib.h>
-#include <string.h>
-#include "background.h"
+#include <stdlib.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include "backg.h"
 
 void initBack(Background * b)
 {
