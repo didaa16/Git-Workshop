@@ -1,0 +1,235 @@
+\hypertarget{fonction_8c}{}\doxysection{fonction.\+c File Reference}
+\label{fonction_8c}\index{fonction.c@{fonction.c}}
+
+
+background program  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}header.\+h\char`\"{}}\newline
+Include dependency graph for fonction.\+c\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{fonction_8c_a49fecbcbd8361086590a0c69f5c1d5c7}{init\+Background}} (\mbox{\hyperlink{structBackground}{Background}} $\ast$B)
+\begin{DoxyCompactList}\small\item\em initialisation du background \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fonction_8c_a21665a23b022fee691d420edfb6b38a2}\label{fonction_8c_a21665a23b022fee691d420edfb6b38a2}} 
+void {\bfseries initperso} (\mbox{\hyperlink{structPersonne}{Personne}} $\ast$p)
+\item 
+void \mbox{\hyperlink{fonction_8c_a833e76b1cb951453249419734a1327a8}{animation}} (\mbox{\hyperlink{structBackground}{Background}} $\ast$B, S\+D\+L\+\_\+\+Surface $\ast$screen)
+\begin{DoxyCompactList}\small\item\em animation du background \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonction_8c_a582bfb47ba00e1e756efe4c84cbce445}{afficher\+Back}} (\mbox{\hyperlink{structBackground}{Background}} B, S\+D\+L\+\_\+\+Surface $\ast$screen)
+\begin{DoxyCompactList}\small\item\em affichage du background animé sur le masque \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fonction_8c_af6522d7add4a034654a88f6d16c57495}\label{fonction_8c_af6522d7add4a034654a88f6d16c57495}} 
+void {\bfseries afficherperso} (\mbox{\hyperlink{structPersonne}{Personne}} p, S\+D\+L\+\_\+\+Surface $\ast$screen)
+\item 
+void \mbox{\hyperlink{fonction_8c_a9ac74acd18040bb11ac10d5b36beaf41}{getinput}} (\mbox{\hyperlink{structinput}{input}} $\ast$in, int run)
+\begin{DoxyCompactList}\small\item\em introduire l\textquotesingle{}input \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonction_8c_a83a94a7ad75fbb4df3002f141fca1464}{scrolling}} (\mbox{\hyperlink{structPersonne}{Personne}} $\ast$p, \mbox{\hyperlink{structBackground}{Background}} $\ast$B, \mbox{\hyperlink{structinput}{input}} $\ast$in)
+\begin{DoxyCompactList}\small\item\em scrolling de l\textquotesingle{}ecran \end{DoxyCompactList}\item 
+S\+D\+L\+\_\+\+Color \mbox{\hyperlink{fonction_8c_a3cc387ea4c9c8da9e2593b25634aa3ee}{Get\+Pixel}} (S\+D\+L\+\_\+\+Surface $\ast$\mbox{\hyperlink{structBackground}{Background}}, int x, int y)
+\begin{DoxyCompactList}\small\item\em detecter le couleur du pixel \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{fonction_8c_a2e95a675bc3c5fc6cb951890cb7ae2fe}{collision\+PP}} (\mbox{\hyperlink{structPersonne}{Personne}} p, S\+D\+L\+\_\+\+Surface $\ast$Masque)
+\begin{DoxyCompactList}\small\item\em detecter la collision \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fonction_8c_a6bf179a842fdaa18d059b1b280255803}{free\+Background}} (\mbox{\hyperlink{structBackground}{Background}} $\ast$B)
+\begin{DoxyCompactList}\small\item\em liberation des elements \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+background program 
+
+\begin{DoxyAuthor}{Author}
+C team 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+April 17,2022 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{fonction_8c_a582bfb47ba00e1e756efe4c84cbce445}\label{fonction_8c_a582bfb47ba00e1e756efe4c84cbce445}} 
+\index{fonction.c@{fonction.c}!afficherBack@{afficherBack}}
+\index{afficherBack@{afficherBack}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{afficherBack()}{afficherBack()}}
+{\footnotesize\ttfamily void afficher\+Back (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structBackground}{Background}}}]{B,  }\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{screen }\end{DoxyParamCaption})}
+
+
+
+affichage du background animé sur le masque 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & est la structure background \\
+\hline
+{\em screen} & est l\textquotesingle{}ecran \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonction_8c_a833e76b1cb951453249419734a1327a8}\label{fonction_8c_a833e76b1cb951453249419734a1327a8}} 
+\index{fonction.c@{fonction.c}!animation@{animation}}
+\index{animation@{animation}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{animation()}{animation()}}
+{\footnotesize\ttfamily void animation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structBackground}{Background}} $\ast$}]{B,  }\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{screen }\end{DoxyParamCaption})}
+
+
+
+animation du background 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & est la structure background \\
+\hline
+{\em screen} & est l\textquotesingle{}ecran \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+$<$ limite du tableau d\textquotesingle{}animation\mbox{\Hypertarget{fonction_8c_a2e95a675bc3c5fc6cb951890cb7ae2fe}\label{fonction_8c_a2e95a675bc3c5fc6cb951890cb7ae2fe}} 
+\index{fonction.c@{fonction.c}!collisionPP@{collisionPP}}
+\index{collisionPP@{collisionPP}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{collisionPP()}{collisionPP()}}
+{\footnotesize\ttfamily int collision\+PP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPersonne}{Personne}}}]{p,  }\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{Masque }\end{DoxyParamCaption})}
+
+
+
+detecter la collision 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & est la structure du personnage \\
+\hline
+{\em Masque} & est le rectangle du masque \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 si il detecte si non 0 
+\end{DoxyReturn}
+$<$ positions du personnage qu\textquotesingle{}il va tester
+
+$<$ detecte le couleur blanc du masque\mbox{\Hypertarget{fonction_8c_a6bf179a842fdaa18d059b1b280255803}\label{fonction_8c_a6bf179a842fdaa18d059b1b280255803}} 
+\index{fonction.c@{fonction.c}!freeBackground@{freeBackground}}
+\index{freeBackground@{freeBackground}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{freeBackground()}{freeBackground()}}
+{\footnotesize\ttfamily void free\+Background (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structBackground}{Background}} $\ast$}]{B }\end{DoxyParamCaption})}
+
+
+
+liberation des elements 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & est la structure background \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonction_8c_a9ac74acd18040bb11ac10d5b36beaf41}\label{fonction_8c_a9ac74acd18040bb11ac10d5b36beaf41}} 
+\index{fonction.c@{fonction.c}!getinput@{getinput}}
+\index{getinput@{getinput}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{getinput()}{getinput()}}
+{\footnotesize\ttfamily void getinput (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinput}{input}} $\ast$}]{in,  }\item[{int}]{run }\end{DoxyParamCaption})}
+
+
+
+introduire l\textquotesingle{}input 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & est la structure input \\
+\hline
+{\em run} & est l\textquotesingle{}entier du boucle du jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fonction_8c_a3cc387ea4c9c8da9e2593b25634aa3ee}\label{fonction_8c_a3cc387ea4c9c8da9e2593b25634aa3ee}} 
+\index{fonction.c@{fonction.c}!GetPixel@{GetPixel}}
+\index{GetPixel@{GetPixel}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{GetPixel()}{GetPixel()}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color Get\+Pixel (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{Background,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+detecter le couleur du pixel 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & est le rectangle du background \\
+\hline
+{\em x} & est la position horizontale \\
+\hline
+{\em y} & est la position verticale \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+color of pixel 
+\end{DoxyReturn}
+$<$ Determine position
+
+$<$Offset by Y
+
+$<$Offset by X
+
+$<$Copy pixel data
+
+$<$Convert to color\mbox{\Hypertarget{fonction_8c_a49fecbcbd8361086590a0c69f5c1d5c7}\label{fonction_8c_a49fecbcbd8361086590a0c69f5c1d5c7}} 
+\index{fonction.c@{fonction.c}!initBackground@{initBackground}}
+\index{initBackground@{initBackground}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{initBackground()}{initBackground()}}
+{\footnotesize\ttfamily void init\+Background (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structBackground}{Background}} $\ast$}]{B }\end{DoxyParamCaption})}
+
+
+
+initialisation du background 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & is the struct background \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+$<$ initialiser le tableau d\textquotesingle{}animation\mbox{\Hypertarget{fonction_8c_a83a94a7ad75fbb4df3002f141fca1464}\label{fonction_8c_a83a94a7ad75fbb4df3002f141fca1464}} 
+\index{fonction.c@{fonction.c}!scrolling@{scrolling}}
+\index{scrolling@{scrolling}!fonction.c@{fonction.c}}
+\doxysubsubsection{\texorpdfstring{scrolling()}{scrolling()}}
+{\footnotesize\ttfamily void scrolling (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPersonne}{Personne}} $\ast$}]{p,  }\item[{\mbox{\hyperlink{structBackground}{Background}} $\ast$}]{B,  }\item[{\mbox{\hyperlink{structinput}{input}} $\ast$}]{in }\end{DoxyParamCaption})}
+
+
+
+scrolling de l\textquotesingle{}ecran 
+
+
+\begin{DoxyParams}{Parameters}
+{\em B} & est la structure background \\
+\hline
+{\em p} & est la structure personnage \\
+\hline
+{\em in} & est la structure input \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nothing 
+\end{DoxyReturn}
+$<$ limite du background
+
+$<$ limite du background
+
+$<$ limite du background
+
+$<$ limite du background

@@ -1,3 +1,11 @@
+/**
+* @file main.c
+* @brief main program
+* @author C team
+* @version 0.1
+* @date April 17,2022
+*
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -25,11 +33,10 @@ int main()
 
 	while (running)
 	{	
-		//affichermask (B,screen);
 		afficherBack (B,screen);
 		animation(&B,screen);
 		afficherperso (p,screen);
-		getinput(&in);
+		getinput(&in,running);
 		scrolling(&p,&B,&in);
 		f = collisionPP(p,B.Masque);
 		printf("%d",f);
