@@ -11,12 +11,6 @@ void initBackground(Background *B)
 	
 	B->PositionBg.x=0;
 	B->PositionBg.y=0;
-
-	B->positionperso.x=0;
-	B->positionperso.y=600;
-	
-	//B->positionMask.x=0;
-	//B->positionMask.y=0;
 	
 	B->camera.x=0;
 	B->camera.y=200;
@@ -35,12 +29,11 @@ void initBackground(Background *B)
 	{
 		printf("Unable to load bitmap: %s\n", SDL_GetError());
 	}
-	B->PersoImg=IMG_Load("perso.png");
-	if (B->PersoImg == NULL)
+	B->Masque=IMG_Load ("Mask1.jpg");
+	if (B->Masque == NULL)
 	{
 		printf("Unable to load bitmap: %s\n", SDL_GetError());
 	}
-
 	if(SDL_Init(SDL_INIT_AUDIO)==-1)
 	{
 		printf("SDL_Init: %s\n", SDL_GetError());
@@ -56,20 +49,30 @@ void initBackground(Background *B)
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 
 }
-
+void initperso (Personne *p)
+{
+	p->sprite=IMG_Load ("perso.png");
+	p->positionperso.x=0;
+	p->positionperso.y=600;
+}
 void afficherBack (Background B,SDL_Surface *screen)
 {
 	SDL_BlitSurface(B.BgImg,&(B.camera),screen,&(B.PositionBg));
 }
 
-void afficherperso (Background B , SDL_Surface *screen)
+void affichermask (Background B, SDL_Surface *screen)
 {
-	SDL_BlitSurface(B.PersoImg,NULL,screen,&(B.positionperso));
+	SDL_BlitSurface(B.Masque,&(B.camera),screen,&(B.positionMasque));
+}
+
+void afficherperso (Personne p , SDL_Surface *screen)
+{
+	SDL_BlitSurface(p.sprite,NULL,screen,&(p.positionperso));
 }
 void getinput(input *in)
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event));
+	SDL_PollEvent(&event);
 	switch(event.type)
 	{	case SDL_QUIT:
                 exit(0);
@@ -119,46 +122,42 @@ void getinput(input *in)
 	}
 }
 
-void scrolling(Background *map , input *in)
+void scrolling(Personne *map ,Background *B, input *in)
 {
 	if(in->right==1)
 	{
-		map->camera.x+=5;
-		map->positionperso.x+=5;
-		map->positionMask.x = map->camera.x ;
-		if(map->camera.x >=12800-1280)
+		B->camera.x+=5;
+		map->positionperso.x+=3;
+		if(B->camera.x >=12800-1280)
 		{
-			map->camera.x=0;
+			B->camera.x=0;
 			
 		}
 	}
 	else if(in->left==1)
 	{
-		map->camera.x-=5;
-		map->positionperso.x-=5;
-		map->positionMask.x = map->camera.x ;
-		if (map->camera.x<= 0)
+		B->camera.x-=5;
+		map->positionperso.x-=3;
+		if (B->camera.x<= 0)
 		{
-			map->camera.x=0;
+			B->camera.x=0;
 		}
 	}
 	if(in->up==1)
-	{	map->camera.y-=5;
+	{	B->camera.y-=5;
 		map->positionperso.y-=5;
-		map->positionMask.y = map->camera.y ;
-		if (map-> camera.y <= 0)
+		if (B-> camera.y <= 0)
 		{
-			map->camera.y=0;
+			B->camera.y=0;
 		}
 	}
 	else if(in->down==1)
 	{
-		
-		if (map-> camera.y <= 200)
+		B->camera.y+=5;
+		map->positionperso.y+=5;
+		if (B-> camera.y >= 200)
 		{
-			map->camera.y+=5;
-			map->positionperso.y+=5;
-			map->positionMask.y = map->camera.y ;
+			B->camera.y=200;
 		}
 	}
 }
@@ -173,71 +172,68 @@ void animation(Background *B, SDL_Surface * screen)
 	SDL_BlitSurface(B->anima[B->anim],&B->camera,screen,&(B->PositionBg));
 }
 
-void init (Background *B , SDL_Surface * screen)
+SDL_Color GetPixel(SDL_Surface *Background, int x, int y)
 {
-	B->Mask = IMG_Load("Mask1.jpg");
-	B->positionMask.x=0;
-	B->positionMask.y=0;
+
+    SDL_Color color;
+    Uint32 col = 0;
+    //Determine position
+
+    char *pixelPosition = (char *)Background->pixels;
+    //Offset by Y
+    pixelPosition += (Background->pitch * y);
+    //Offset by X
+    pixelPosition += (Background->format->BytesPerPixel * x);
+    //Copy pixel data
+    memcpy(&col, pixelPosition, Background->format->BytesPerPixel);
+    //Convert to color
+    SDL_GetRGB(col, Background->format, &color.r, &color.g, &color.b);
+
+    return (color);
 }
 
-void affichermask (Background B, SDL_Surface *screen)
-{
-	SDL_BlitSurface(B.Mask,NULL,screen,&(B.positionMask));
-}
-SDL_Color GetPixel (SDL_Surface* pSurface, int x, int y)
-{
-	SDL_Color color;
-	Uint32 col = 0;
-	char *pPosition = (char*) pSurface -> pixels;
-	pPosition += (pSurface -> pitch * y);
-	pPosition += (pSurface->format->BytesPerPixel * x);
-	memcpy (&col, pPosition, pSurface->format->BytesPerPixel);
-	SDL_GetRGB (col, pSurface->format, &color.r, &color.g, &color.b);
-	return (color);
-}
 
-int detectCollPP (Background B, SDL_Rect Personnage)
+int collisionPP(Personne p, SDL_Surface *Masque)
 {
-	SDL_Color colobs ={255,255,255} ;
-	SDL_Color colgotten;
-	positionPers Pos [8];
-	int collision = 0, i = 0;
-	Pos[0].x = Personnage.x ;
-	Pos[0].y = Personnage.y;
-	Pos[1].x = Personnage.x + (Personnage.w /2);
-	Pos[1].y = Personnage.y;
-	Pos[2].x = Personnage.x + Personnage.w;
-	Pos[2].y = Personnage.y;
-	Pos[3].x = Personnage.x;
-	Pos[3].y = Personnage.y + (Personnage.h/2);
-	Pos[4].x = Personnage.x;
-	Pos[4].y = Personnage.y + Personnage.h;
-	Pos[5].x = Personnage.x + (Personnage.w /2);
-	Pos[5].y = Personnage.y + Personnage.h;
-	Pos[6].x = Personnage.x + Personnage.w;
-	Pos[6].y = Personnage.y + Personnage.h;
-	Pos[7].x = Personnage.x + Personnage.w;
-	Pos[7].y = Personnage.y + (Personnage.h/2);
-	colgotten = GetPixel(B.Mask, Pos[i].x, Pos[i].y);
-	while ((i<=7) && (collision == 0)) 
-	{
-		if (colobs.r == colgotten.r && colobs.b == colgotten.b && colobs.g == colgotten.g)
-		{
-			collision = 1;
-		}
-		else
-		{
-			i++;
-		}
-	}
-	return collision;
-}
+    SDL_Color test, couleurnoir = {255, 0, 0};
 
+    SDL_Rect pos[8];
+    
+    pos[0].x = p.positionperso.x;
+    pos[0].y = p.positionperso.y;
+    pos[1].x = p.positionperso.x + p.positionperso.w / 2;
+    pos[1].y = p.positionperso.y;
+    pos[2].x = p.positionperso.x + p.positionperso.w;
+    pos[2].y = p.positionperso.y;
+    pos[3].x = p.positionperso.x;
+    pos[3].y = p.positionperso.y + p.positionperso.h / 2;
+    pos[4].x = p.positionperso.x;
+    pos[4].y = p.positionperso.y + p.positionperso.h;
+    pos[5].x = p.positionperso.x + p.positionperso.w / 2;
+    pos[5].y = p.positionperso.y + p.positionperso.h;
+    pos[6].x = p.positionperso.x + p.positionperso.w;
+    pos[6].y = p.positionperso.y + p.positionperso.h;
+    pos[7].x = p.positionperso.x + p.positionperso.w;
+    pos[7].y = p.positionperso.y + p.positionperso.h / 2;
+    
+    int collision = 0, x, y;
+
+    for (int i = 0; i < 8 && collision == 0; i++)
+    {
+        x = pos[i].x;
+        y = pos[i].y;
+        
+        test = GetPixel(Masque, x, y);
+        
+        if (test.r == 255 && test.g == 255 && test.b == 255)
+            collision = 1;
+    }
+    return collision;
+}
 
 void freeBackground(Background *B)
 {
 	SDL_FreeSurface(B->BgImg);
-	SDL_FreeSurface(B->PersoImg);
-	//SDL_FreeSurface(B->Mask);
+	SDL_FreeSurface(B->Masque);
 	SDL_FreeSurface(B->anima[50]);
 }

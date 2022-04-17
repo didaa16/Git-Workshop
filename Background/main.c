@@ -9,8 +9,7 @@ int main()
 {
 	char ch[10];
 	Background B, Back [20];
-	//SDL_Surface * BackgroundMasque;
-	SDL_Rect Personnage;
+	Personne p;
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Surface *screen=NULL;
 	screen = SDL_SetVideoMode(1280, 800, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
@@ -18,21 +17,21 @@ int main()
 	{
 		printf("unable to set video mode: %s /n",SDL_GetError());
 	}
-	int running =1 ;
+	int running =1;
 	int f;
 	input in;
 	initBackground(&B);
-	init (&B,screen);
+	initperso (&p);
+
 	while (running)
 	{	
+		//affichermask (B,screen);
 		afficherBack (B,screen);
-		affichermask (B,screen);
-		animation(&B,screen); 
-		
-		afficherperso (B,screen);
+		animation(&B,screen);
+		afficherperso (p,screen);
 		getinput(&in);
-		scrolling(&B,&in);
-		f = detectCollPP (B , B.positionperso);
+		scrolling(&p,&B,&in);
+		f = collisionPP(p,B.Masque);
 		printf("%d",f);
 		SDL_Flip(screen);	
 	}
