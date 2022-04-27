@@ -1,53 +1,61 @@
+/**
+* @file perso.c
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
-#include "perso.h"
-
-void initperso1(perso *p)
+#include "integration.h"
+/**
+* @brief initialisation du personnage.
+* @param p the personage
+* return nothing
+*/
+void initperso(perso *p)
 {
-p->sprite=IMG_Load("walk_right.png");
-p->pos.x=80;
-p->pos.y=390;
-p->etat=REPOS;
-p->direction=RIGHT;
-p->v_x=4;
-p->v_saut=-6.5;
-p->v_y=p->v_saut;
-p->time=TIME;
-p->nbr=0;
-}
-void initmap(map *m)
-{
-m->background=IMG_Load("backg-perso.jpg");
-m->pos.x=0;
-m->pos.y=0;
-
+	p->sprite=IMG_Load("walk_right.png");
+	p->pos.x=500;
+	p->pos.y=700;
+	p->etat=REPOS;
+	p->direction=RIGHT;
+	p->v_x=4;
+	p->v_saut=-6.5;
+	p->v_y=p->v_saut;
+	p->time=TIME;
+	p->nbr=0;
 }
 
-void afficher_map(map m,SDL_Surface *ecran)
-{
-SDL_BlitSurface(m.background,NULL,ecran,&m.pos);
-}
-void afficher_perso1(perso *p,SDL_Surface *screen)
+
+/**
+* @brief affichage du personnage.
+* @param p the personage
+* @param scren screen 
+* return nothing
+*/
+void afficher_perso(perso *p,SDL_Surface *screen)
  {
- SDL_Rect pos1,pos2;
- pos1.x=p->pos.x;
- pos1.y=p->pos.y;
- pos1.h=p->pos.h;
- pos1.w=p->pos.w;
- 
- pos2.x=p->nbr*125;
- pos2.y=0;
- pos2.w=125;
- pos2.h=160;
- SDL_BlitSurface(p->sprite,&pos2,screen,&pos1);
+	 SDL_Rect pos1,pos2;
+	 pos1.x=p->pos.x;
+	 pos1.y=p->pos.y;
+	 pos1.h=p->pos.h;
+	 pos1.w=p->pos.w;
+	 
+	 pos2.x=p->nbr*160;
+	 pos2.y=0;
+	 pos2.w=160;
+	 pos2.h=160;
+	 SDL_BlitSurface(p->sprite,&pos2,screen,&pos1);
  }
-void getinput1(input *in)
+ /**
+* @brief getinput du personnage.
+* @param in the input 
+* return nothing
+*/
+void getinput(input *in)
 {
-SDL_Event event;
-SDL_PollEvent(&event);
+	SDL_Event event;
+	SDL_PollEvent(&event);
 
 	switch(event.type)
 	{	case SDL_QUIT:
@@ -106,8 +114,13 @@ SDL_PollEvent(&event);
 		break;
 	}
 }
-
-void deplacer_perso1(input *in , perso *p)
+/**
+* @brief deplacement du personnage.
+* @param p the personage
+* @param in the input 
+* return nothing
+*/
+void deplacer_perso(input *in , perso *p)
 {
 	if(in->left==1)
 	{
@@ -189,7 +202,7 @@ void deplacer_perso1(input *in , perso *p)
 			p->sprite=IMG_Load("left.png");
 		}	
 	}
-	p->pos.y+=GRAVITY_SPEED;// a verifier
+	p->pos.y+=GRAVITY_SPEED;
 	if((p->pos.y<MAX_FALL_SPEED) &&(p->direction==RIGHT) )
 	{	
 		p->pos.x+=p->v_x;
@@ -205,29 +218,39 @@ void deplacer_perso1(input *in , perso *p)
 		p->pos.y=MAX_FALL_SPEED;
 	}
 }
-void animer_player1(perso *p)
-{
- 
 
- 
- if(p->time<=0)
- {
- p->nbr++;
-p->time=TIME;	
- 	if(p->nbr>=p->sprite->w/125)
- 	{
- 	p->nbr=0;
- 	}
+/**
+* @brief animation du personnage.
+* @param p the personage
+* return nothing
+*/
+void animer_player(perso *p)
+{
+
+	 if(p->time<=0)
+	 {
+		p->nbr++;
+		p->time=TIME;	
+	 	if(p->nbr>=p->sprite->w/160)
+	 	{
+	 		p->nbr=0;
+	 	}
+	 }	
+	 else
+	 {
+	 	p->time--;
+	 }
  }
- else
- {
- p->time--;
- }
- }
- 
+
+
+ /**
+* @brief liberation du personnage.
+* @param p the personage
+* return nothing
+*/
 void liberer_perso1(perso *p)
 {
-SDL_FreeSurface(p->sprite);
+	SDL_FreeSurface(p->sprite);
 }
 
 

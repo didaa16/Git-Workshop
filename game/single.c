@@ -4,67 +4,51 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
-#include "perso.h"
-#include "fonction.h"
+#include "integration.h"
 #include "init.h"
 
 void singlee(SDL_Surface *ecran)
 {
-perso p;
-map m;
-input in;
-SDL_Event event;
-int running=1;
-ennemi e;
-coin c,c2;
+	char ch[10];
+	Background B, Back [20];
+	perso p;
+	input in;
+	int running =1;
+	int f;
+	
+	
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Surface *screen=NULL;
+	
+	screen = SDL_SetVideoMode(1280, 800, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	
+	initperso(&p);
+	initBackground(&B);
+	
 
-ecran=SDL_SetVideoMode(1280,800,32,SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
+	while (running)
+	{	
+		afficherBack (B,screen);
+		afficher_perso(&p,screen);
+		
+		animation(&B,screen);
+		
+		getinput_bg(&in,running);
+		if(p.pos.x>=600)
+		{
+			p.pos.x=600;
+		}
+		getinput(&in);
+		scrolling(&B,&in);
+		f = collisionPP(p,B.Masque);
+		
+		deplacer_perso(&in,&p);
+		animer_player(&p);
 
-
-//initperso1(&p);
-//initmap(&m);
-initennemi(&e);
-initcoin(&c);
-initcoin2(&c2);
-
-
-
-while(running)
-{
-//afficher_map(m,ecran);
-persoo(ecran);
-affichercoin(&c,ecran);
-afficherennemi(&e,ecran);
-//afficher_perso(&p,ecran);
-//getinput1(&in);
-//deplacer_perso(&in,&p);
-animer(&e);
-animerc(&c);
-deplacement(&e);
-deplacementcoin(&c);
-
-SDL_PollEvent(&event);
-
-switch(event.type)
-{	case SDL_QUIT:
-	running=0;
-	break;
-	case SDL_KEYDOWN:
-	switch(event.key.keysym.sym)
-	{	 
-	case SDLK_ESCAPE:
-	running=0;
-	break;
-	case SDLK_f:
-    	SDL_WM_ToggleFullScreen(ecran);
-    	break;
+		
+		SDL_Flip(screen);	
 	}
-	break;
-}
-
-SDL_Flip(ecran);
-}
-
-liberer_entite(&e);
-liberer_perso1(&p);
+	freeBackground(&B);
+	liberer_perso1(&p);
+	SDL_Quit();
 }
