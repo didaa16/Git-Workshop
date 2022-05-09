@@ -16,7 +16,7 @@ void initperso(perso *p)
 {
 	p->sprite=IMG_Load("walk_right.png");
 	p->pos.x=500;
-	p->pos.y=700;
+	p->pos.y=480;
 	p->etat=REPOS;
 	p->direction=RIGHT;
 	p->v_x=4;
@@ -76,13 +76,30 @@ void getinput(input *in)
 			/*case SDLK_UP:
 			in->up=1;
 			break;
-			
 			case SDLK_DOWN:
 			in->down=1;
 			break;*/
-			
 			case SDLK_SPACE:
 			in->jump=1;
+			break;
+			
+			
+			case SDLK_q:
+			in->q=1;
+			break;
+			case SDLK_d:
+			in->d=1;
+			break;
+			/*case SDLK_z:
+			inn->up1=1;
+			break;
+			
+			case SDLK_s:
+			inn->down1=1;
+			break;*/
+			
+			case SDLK_x:
+			in->x=1;
 			break;
 			default:
 			break;
@@ -107,6 +124,24 @@ void getinput(input *in)
 			break;*/
 			case SDLK_SPACE:
 			in->jump=0;
+			break;
+			
+			case SDLK_q:
+			in->q=0;
+			break;
+			case SDLK_d:
+			in->d=0;
+			break;
+			/*case SDLK_z:
+			inn->up1=0;
+			break;
+			
+			case SDLK_s:
+			inn->down1=0;
+			break;*/
+			
+			case SDLK_x:
+			in->x=0;
 			break;
 			default:
 			break;						
@@ -216,6 +251,206 @@ void deplacer_perso(input *in , perso *p)
 	if(p->pos.y>=MAX_FALL_SPEED)
 	{
 		p->pos.y=MAX_FALL_SPEED;
+	}
+}
+
+void deplacer_perso2(input *in , perso *p,int press)
+{
+	if (press ==1)
+	{
+		if(in->left==1)
+		{
+			p->pos.x-=SPEED;
+			p->direction=LEFT;
+			if(p->pos.x<0)
+			{
+				p->pos.x=0;
+			}
+			if(p->etat!=WALK_LEFT)
+			{
+				p->etat=WALK_LEFT;
+				p->sprite=IMG_Load("left.png");
+				p->nbr=0;
+			}
+		}
+		else if(in->right==1)
+		{
+			p->pos.x+=SPEED;
+			p->direction=RIGHT;
+			if(p->pos.x+LARGEUR_JOUEUR>=LARGEUR_ECRAN)
+			{
+				p->pos.x=LARGEUR_ECRAN-LARGEUR_JOUEUR;
+			}
+			if(p->etat!=WALK_RIGHT)
+			{
+				p->etat=WALK_RIGHT;
+				p->sprite=IMG_Load("right.png");
+				p->nbr=0;
+			}
+		}
+		else if((in->right==0)&&(in->left==0)&&(in->jump==0))
+		{	if(p->etat!=REPOS)
+			{	p->etat=REPOS;
+				if(p->direction==LEFT)
+				{
+					p->sprite=IMG_Load("walk_left.png");
+					p->nbr=0;
+				}
+				else
+				{
+					p->sprite=IMG_Load("walk_right.png");
+					p->nbr=0;
+				}
+			}
+			
+		}
+		/*if(in->up==1)
+		{
+			p->pos.y-=SPEED;
+			if(p->pos.y<0)
+			{
+				p->pos.y=0;
+			}
+		}
+		else if(in->down==1)
+		{
+			p->pos.y+=SPEED;
+			if(p->pos.y+HAUTEUR_JOUEUR>=HAUTEUR_ECRAN)
+			{
+				p->pos.y=HAUTEUR_ECRAN-HAUTEUR_JOUEUR;
+			}
+		}*/
+		if (in->jump==1)
+		{	
+			p->pos.y-=JUMP_HAUTEUR;	
+			if(p->pos.y<0)
+			{
+				p->pos.y=0;
+			}
+			if((p->direction==RIGHT)&&(p->etat != JUMP_RIGHT))
+			{	
+				p->etat=JUMP_RIGHT;
+				p->sprite=IMG_Load("right.png");
+			}	
+			else if ((p->direction==LEFT)&&(p->etat != JUMP_LEFT))
+			{	
+				p->etat=JUMP_LEFT;
+				p->sprite=IMG_Load("left.png");
+			}	
+		}
+		p->pos.y+=GRAVITY_SPEED;
+		if((p->pos.y<MAX_FALL_SPEED) &&(p->direction==RIGHT) )
+		{	
+			p->pos.x+=p->v_x;
+			p->v_y+=GRAVITY_SPEED; 
+		}
+		else if((p->pos.y<MAX_FALL_SPEED) &&(p->direction==LEFT) )
+		{	
+			p->pos.x-=p->v_x;
+			p->v_y+=GRAVITY_SPEED; 
+		}	
+		if(p->pos.y>=MAX_FALL_SPEED)
+		{
+			p->pos.y=MAX_FALL_SPEED;
+		}
+	}
+	if(press==2)
+	{
+		if(in->q==1)
+		{
+			p->pos.x-=SPEED;
+			p->direction=LEFT;
+			if(p->pos.x<0)
+			{
+				p->pos.x=0;
+			}
+			if(p->etat!=WALK_LEFT)
+			{
+				p->etat=WALK_LEFT;
+				p->sprite=IMG_Load("left.png");
+				p->nbr=0;
+			}
+		}
+		else if(in->d==1)
+		{
+			p->pos.x+=SPEED;
+			p->direction=RIGHT;
+			if(p->pos.x+LARGEUR_JOUEUR>=LARGEUR_ECRAN)
+			{
+				p->pos.x=LARGEUR_ECRAN-LARGEUR_JOUEUR;
+			}
+			if(p->etat!=WALK_RIGHT)
+			{
+				p->etat=WALK_RIGHT;
+				p->sprite=IMG_Load("right.png");
+				p->nbr=0;
+			}
+		}
+		else if((in->right==0)&&(in->left==0)&&(in->jump==0))
+		{	if(p->etat!=REPOS)
+			{	p->etat=REPOS;
+				if(p->direction==LEFT)
+				{
+					p->sprite=IMG_Load("walk_left.png");
+					p->nbr=0;
+				}
+				else
+				{
+					p->sprite=IMG_Load("walk_right.png");
+					p->nbr=0;
+				}
+			}
+			
+		}
+		/*if(in->z==1)
+		{
+			p->pos.y-=SPEED;
+			if(p->pos.y<0)
+			{
+				p->pos.y=0;
+			}
+		}
+		else if(in->s==1)
+		{
+			p->pos.y+=SPEED;
+			if(p->pos.y+HAUTEUR_JOUEUR>=HAUTEUR_ECRAN)
+			{
+				p->pos.y=HAUTEUR_ECRAN-HAUTEUR_JOUEUR;
+			}
+		}*/
+		if (in->x==1)
+		{	
+			p->pos.y-=JUMP_HAUTEUR;	
+			if(p->pos.y<0)
+			{
+				p->pos.y=0;
+			}
+			if((p->direction==RIGHT)&&(p->etat != JUMP_RIGHT))
+			{	
+				p->etat=JUMP_RIGHT;
+				p->sprite=IMG_Load("right.png");
+			}	
+			else if ((p->direction==LEFT)&&(p->etat != JUMP_LEFT))
+			{	
+				p->etat=JUMP_LEFT;
+				p->sprite=IMG_Load("left.png");
+			}	
+		}
+		p->pos.y+=GRAVITY_SPEED;
+		if((p->pos.y<MAX_FALL_SPEED) &&(p->direction==RIGHT) )
+		{	
+			p->pos.x+=p->v_x;
+			p->v_y+=GRAVITY_SPEED; 
+		}
+		else if((p->pos.y<MAX_FALL_SPEED) &&(p->direction==LEFT) )
+		{	
+			p->pos.x-=p->v_x;
+			p->v_y+=GRAVITY_SPEED; 
+		}	
+		if(p->pos.y>=MAX_FALL_SPEED)
+		{
+			p->pos.y=MAX_FALL_SPEED;
+		}
 	}
 }
 

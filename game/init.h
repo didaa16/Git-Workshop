@@ -10,6 +10,7 @@ SDL_Surface *img;
 };
 typedef struct image image;
 
+
 void initmenu(image menu[],char anim[]);
 void initmenus(image menu[],char anim[]);
 void initmenup(image menu[],char anim[]);

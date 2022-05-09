@@ -27,7 +27,8 @@ typedef struct perso
 */
 typedef struct input 
 {
-	int left,right,up,down,jump;/*!< les mouvement du personnage */ 
+int left,right,up,down,jump; /*!< les mouvement du personnage 1 */ 
+int d,q,z,s,x; /*!< les mouvement du personnage 2 */ 
 }input;
 
 typedef struct
@@ -43,20 +44,60 @@ typedef struct
 	Mix_Music *music; /* !< chargement du musique */
 }Background;
 
-void initperso(perso *p);
-void afficher_perso(perso *p,SDL_Surface *ecran);
-void getinput(input *in);
-void deplacer_perso(input *in , perso *p);
-void animer_player(perso *p);
-void liberer_perso1(perso *p);
-void initBackground(Background *B);
-void afficherBack(Background B, SDL_Surface * screen);
-void animation (Background *B,SDL_Surface * screen) ;
-void getinput_bg(input *in,int run);
-void scrolling(Background *B, input *in);
-int collisionPP(perso p, SDL_Surface *Masque);
-void freeBackground(Background *B);
+typedef struct coin
+{
+	SDL_Surface *sprite; 
+	int  direction;
+	int time,nbr;
+	SDL_Rect posscreen;
+	SDL_Rect possprite;
+	SDL_Rect pos1,pos2;
+}coin;
+typedef struct coin coin;
 
+typedef struct ennemi
+{
+	SDL_Surface *sprite; 
+	int  direction;
+	int time,nbr;
+	SDL_Rect posscreen;
+	SDL_Rect possprite;
+	SDL_Rect pos1,pos2;
+}ennemi;
+typedef struct ennemi ennemi;
+
+
+	void initperso(perso *p);
+	void afficher_perso(perso *p,SDL_Surface *ecran);
+	void getinput(input *in);
+	void deplacer_perso(input *in , perso *p);
+	void deplacer_perso2(input *in , perso *p,int press);
+	void animer_player(perso *p);
+	void liberer_perso1(perso *p);
+	void initBackground(Background *B);
+	void afficherBack(Background B, SDL_Surface * screen);
+	void animation (Background *B,SDL_Surface * screen) ;
+	void getinput_bg(input *in,int run);
+	void scrolling(Background *B, input *in);
+	int collisionPP(perso p, SDL_Surface *Masque);
+	void freeBackground(Background *B);
+	void initennemi(ennemi *e);
+	void afficherennemi(ennemi *e,SDL_Surface *screen);
+	void liberer_enemi(ennemi *a);
+	//void animerennemi(ennemi *e);
+	void animer(ennemi *e);
+	void deplace(ennemi *e);
+	void deplacement(ennemi *e);
+	void initcoin(coin *e);
+	void affichercoin(coin *e,SDL_Surface *screen);
+	void animerc(coin *e);
+	int colisionBP(ennemi *e,SDL_Rect posp);
+	void deplacementcoin(coin *c);
+	void initcoin2(coin *e);
+	int collision(SDL_Rect rec1,ennemi *e);
+
+#define wicked 0.5
+#define micked 0.05
 
 #define TIME		8
 #define LEFT 		1
@@ -68,7 +109,7 @@ void freeBackground(Background *B);
 #define JUMP_LEFT 	4
 #define JUMP_HAUTEUR 	13
 #define SPEED 		5
-#define MAX_FALL_SPEED  190 
+#define MAX_FALL_SPEED  500 
 #define GRAVITY_SPEED	4
 #define REPOS 		0
 #define LARGEUR_JOUEUR  93

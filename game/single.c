@@ -5,7 +5,7 @@
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
 #include "integration.h"
-#include "init.h"
+#include "menu.h"
 
 void singlee(SDL_Surface *ecran)
 {
@@ -15,23 +15,24 @@ void singlee(SDL_Surface *ecran)
 	input in;
 	int running =1;
 	int f;
-	
-	
+	ennemi e;
+	coin c,c2;	
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Surface *screen=NULL;
 	
-	screen = SDL_SetVideoMode(1280, 800, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 	
 	initperso(&p);
 	initBackground(&B);
-	
+	initennemi(&e);
+	initcoin(&c);
+	//initcoin2(&c2);
 
 	while (running)
-	{	
-		afficherBack (B,screen);
-		afficher_perso(&p,screen);
-		
-		animation(&B,screen);
+	{
+		afficherBack (B,ecran);
+		afficher_perso(&p,ecran);
+		affichercoin(&c,ecran);
+		//affichercoin(&c2,ecran);
+		afficherennemi(&e,ecran);
 		
 		getinput_bg(&in,running);
 		if(p.pos.x>=600)
@@ -42,13 +43,37 @@ void singlee(SDL_Surface *ecran)
 		scrolling(&B,&in);
 		f = collisionPP(p,B.Masque);
 		
+		deplacement(&e);
+		deplacementcoin(&c);
 		deplacer_perso(&in,&p);
-		animer_player(&p);
-
+		//deplacementcoin(&c2);
 		
-		SDL_Flip(screen);	
+		animation(&B,ecran);
+		animer_player(&p);
+		animer(&e);
+		animerc(&c);
+		//animerc(&c2);
+		
+		
+		int collisionn=colisionBP(&e,p.pos);
+
+
+		//int collisionn=collision(posp,&e);
+
+		if (collisionn==1)
+		{
+		//e.posscreen.x=0;
+		e.direction=1;
+		}
+		else if (collisionn==2)
+		{
+		e.direction=0;
+
+		}
+		SDL_Flip(ecran);	
 	}
 	freeBackground(&B);
 	liberer_perso1(&p);
+	liberer_enemi(&e);
 	SDL_Quit();
 }

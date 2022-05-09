@@ -4,7 +4,6 @@
 #include<SDL/SDL.h>
 #include<SDL/SDL_mixer.h>
 #include"init.h"
-#include"perso.h"
 #include"menu.h"
 
 void startt(SDL_Surface *ecran)
@@ -78,7 +77,7 @@ Mix_PlayChannel(1,clickmusic,0);
 }
 else if (i==2)
 {
-//multii(ecran);
+multii(ecran);
 Mix_PlayChannel(1,clickmusic,0);
 }
 else if (i==3)
@@ -98,7 +97,7 @@ case SDL_MOUSEMOTION:
         else if((event.motion.x>=multi.pos.x) && (event.motion.x<=780) && (event.motion.y>=multi.pos.y) && (event.motion.y<=531) )
 						{ 
 						afficher(multi1,ecran);
-						//tap=2;
+						tap=2;
 						}   
 	else if((event.motion.x>=back.pos.x) && (event.motion.x<=185) && (event.motion.y>=back.pos.y) && (event.motion.y<=761) )
 						{ 
@@ -116,9 +115,9 @@ break;
 case 1:
 singlee(ecran);
 break;
-//case 2:
-//multii(ecran);
-//break;
+case 2:
+multii(ecran);
+break;
 }
 break;
 
