@@ -29,17 +29,22 @@ int main()
 	int f;
 	input in;
 	initBackground(&B);
-	initperso (&p);
+	//initperso (&p);
 
 	while (running)
 	{	
-		afficherBack (B,screen);
+		//afficherBack (B,screen);
+		afficherPartage (B,screen);
 		animation(&B,screen);
-		afficherperso (p,screen);
+		//afficherperso (p,screen); 
 		getinput(&in,running);
+
 		scrolling(&p,&B,&in);
+		scrolling1(&p,&B,&in);
+
 		f = collisionPP(p,B.Masque);
-		printf("%d",f);
+
+
 		SDL_Flip(screen);	
 	}
 	freeBackground(&B);

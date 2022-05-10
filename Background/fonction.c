@@ -27,11 +27,22 @@ void initBackground(Background *B)
 	B->PositionBg.y=0;
 	B->positionMasque.x=0;
 	B->positionMasque.y=0;
-	
+	B->PositionBg1.x=640;
+	B->PositionBg1.y=0;
+	B->positionMasque1.x=640;
+	B->positionMasque1.y=0;
 	B->camera.x=0;
 	B->camera.y=200;
 	B->camera.w = 1280;
 	B->camera.h = 800;
+	B->camera1.x=640;
+	B->camera1.y=200;
+	B->camera1.w = 1280;
+	B->camera1.h = 800;
+	B->posanim.x=0;
+	B->posanim.y=0;
+	B->posanim1.x=640;
+	B->posanim1.y=0;
 	
 	int i;
 	char ch[20]; /*!< initialiser le tableau d'animation */
@@ -40,16 +51,37 @@ void initBackground(Background *B)
 		sprintf(ch,"Back%d.jpg",i);
 		B->anima[i] = IMG_Load(ch);
 	}
+	char ch1[20]; /*!< initialiser le tableau d'animation */
+	for(i=1;i<10;i++)
+	{
+		sprintf(ch,"Back%d.jpg",i);
+		B->anima1[i] = IMG_Load(ch);
+	}
+	
 	B->BgImg= IMG_Load("Backg1.jpg");
 	if (B->BgImg == NULL)
 	{
 		printf("Unable to load bitmap: %s\n", SDL_GetError());
 	}
+	
 	B->Masque=IMG_Load ("Mask1.jpg");
 	if (B->Masque == NULL)
 	{
 		printf("Unable to load bitmap: %s\n", SDL_GetError());
 	}
+	
+	B->BgImg1= IMG_Load("Backg1.jpg");
+	if (B->BgImg == NULL)
+	{
+		printf("Unable to load bitmap: %s\n", SDL_GetError());
+	}
+	
+	B->Masque1=IMG_Load ("Mask1.jpg");
+	if (B->Masque == NULL)
+	{
+		printf("Unable to load bitmap: %s\n", SDL_GetError());
+	}
+	
 	if(SDL_Init(SDL_INIT_AUDIO)==-1)
 	{
 		printf("SDL_Init: %s\n", SDL_GetError());
@@ -64,12 +96,12 @@ void initBackground(Background *B)
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
 
 }
-void initperso (Personne *p)
+/*void initperso (Personne *p)
 {
 	p->sprite=IMG_Load ("perso.png");
 	p->positionperso.x=0;
 	p->positionperso.y=600;
-}
+}*/
 
 
 /**
@@ -85,6 +117,11 @@ void animation(Background *B, SDL_Surface * screen)
 	{
 		B->anim=1;
 	}
+	B->anim1++;
+	if(B->anim1==10) /*!< limite du tableau d'animation */
+	{
+		B->anim1=1;
+	}
 }
 
 /**
@@ -99,12 +136,20 @@ void afficherBack (Background B,SDL_Surface *screen)
 	SDL_BlitSurface(B.BgImg,&(B.camera),screen,&(B.PositionBg));
 	SDL_BlitSurface(B.anima[B.anim],&B.camera,screen,&(B.PositionBg));
 }
-
-void afficherperso (Personne p , SDL_Surface *screen)
+void afficherPartage (Background B,SDL_Surface *screen)
+{
+	SDL_BlitSurface(B.Masque,&(B.camera),screen,&(B.positionMasque));
+	SDL_BlitSurface(B.Masque1,&(B.camera1),screen,&(B.positionMasque1));
+	SDL_BlitSurface(B.BgImg,&(B.camera),screen,&(B.PositionBg));
+	SDL_BlitSurface(B.BgImg1,&(B.camera1),screen,&(B.PositionBg1));
+	SDL_BlitSurface(B.anima[B.anim],&B.camera,screen,&(B.PositionBg));
+	SDL_BlitSurface(B.anima1[B.anim1],&B.camera1,screen,&(B.PositionBg1));
+}
+/*void afficherperso (Personne p , SDL_Surface *screen)
 {
 	SDL_BlitSurface(p.sprite,NULL,screen,&(p.positionperso));
 }
-
+*/
 /**
 *@brief introduire l'input 
 *@param in est la structure input
@@ -140,6 +185,18 @@ void getinput(input *in, int run)
 			case SDLK_RIGHT:
 			in->right=1;
 			break;
+			case SDLK_z:
+			in->up1=1;
+			break;
+			case SDLK_s:
+			in->down1=1;
+			break;
+			case SDLK_q:
+			in->left1=1;
+			break;
+			case SDLK_d:
+			in->right1=1;
+			break;
 			default:
 			break;
 									
@@ -159,6 +216,18 @@ void getinput(input *in, int run)
 			break;
 			case SDLK_RIGHT:
 			in->right=0;
+			break;
+			case SDLK_q:
+			in->left1=0;
+			break;
+			case SDLK_z:
+			in->up1=0;
+			break;
+			case SDLK_s:
+			in->down1=0;
+			break;
+			case SDLK_d:
+			in->right1=0;
 			break;
 			default:
 			break;						
@@ -180,7 +249,7 @@ void scrolling(Personne *p ,Background *B, input *in)
 	{
 		B->camera.x+=5;
 		p->positionperso.x+=5;
-		if(B->camera.x >=12800-1280) /*!< limite du background */
+		if(B->camera.x >=12800-640) /*!< limite du background */
 		{
 			B->camera.x=0;
 			
@@ -210,6 +279,46 @@ void scrolling(Personne *p ,Background *B, input *in)
 		if (B-> camera.y >= 200) /*!< limite du background */
 		{
 			B->camera.y=200;
+		}
+	}
+}
+
+void scrolling1(Personne *p ,Background *B, input *in)
+{
+	if(in->right1==1)
+	{
+		B->camera1.x+=5;
+		p->positionperso.x+=5;
+		if(B->camera1.x >=12800-640) /*!< limite du background */
+		{
+			B->camera1.x=0;
+			
+		}
+	}
+	else if(in->left1==1)
+	{
+		B->camera1.x-=5;
+		p->positionperso.x-=5;
+		if (B->camera1.x<= 640) /*!< limite du background */
+		{
+			B->camera1.x=640;
+		}
+	}
+	if(in->up1==1)
+	{	B->camera1.y-=5;
+		p->positionperso.y-=5;
+		if (B-> camera1.y <= 0) /*!< limite du background */
+		{
+			B->camera1.y=0;
+		}
+	}
+	else if(in->down1==1)
+	{
+		B->camera1.y+=5;
+		p->positionperso.y+=5;
+		if (B-> camera1.y >= 200) /*!< limite du background */
+		{
+			B->camera1.y=200;
 		}
 	}
 }
